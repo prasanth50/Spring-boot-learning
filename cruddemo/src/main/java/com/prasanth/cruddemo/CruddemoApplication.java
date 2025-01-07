@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.sql.SQLOutput;
+
 @SpringBootApplication
 public class CruddemoApplication {
 
@@ -18,8 +20,31 @@ public class CruddemoApplication {
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
 //			createStudent(studentDAO);
-			createMultipleStudent(studentDAO);
+//			createMultipleStudent(studentDAO);
+			readStudent(studentDAO);
 		};
+	}
+
+	private void readStudent(StudentDAO studentDAO) {
+
+		// Create a student object
+		System.out.println("Creating a new Student Object");
+		Student s1 = new Student("hello", "world!", "hello@world.com");
+
+		// Save the student
+		System.out.println("Saving the student data into Database....");
+		studentDAO.save(s1);
+
+		// Display id of the saved student
+		System.out.println("Displaying the student data using the id: " + s1.getId());
+
+		// Retrieve Student based on the id: primary key
+		System.out.println("Retrieve Student based on the id: primary key -> " + s1.getId());
+		Student myStudent = studentDAO.findById(s1.getId());
+
+
+		// Display the Student
+		System.out.printf("From the student: " + myStudent);
 	}
 
 	private void createMultipleStudent(StudentDAO studentDAO) {
